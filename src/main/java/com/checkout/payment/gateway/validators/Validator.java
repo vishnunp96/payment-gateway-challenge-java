@@ -1,14 +1,12 @@
 package com.checkout.payment.gateway.validators;
 
 import com.checkout.payment.gateway.model.PostPaymentRequest;
-import org.springframework.stereotype.Component;
 import java.time.DateTimeException;
 import java.time.YearMonth;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Component
 public class Validator {
 
   /**
