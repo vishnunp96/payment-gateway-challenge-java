@@ -96,6 +96,37 @@ class PaymentGatewayControllerTest {
         .andExpect(jsonPath("$.expiryMonth").value(expiryMonth))
         .andExpect(jsonPath("$.expiryYear").value(expiryYear))
         .andExpect(jsonPath("$.currency").value(currency));
+  }
 
+
+
+  private static Stream<Arguments> badPaymentExamples() {
+    return Stream.of(
+        Arguments.of(10, "USD", 1, 2025, 123L, 890)
+//        Arguments.of(10, "USD", 1, 2024, 5678567856781234L, 890),
+//        Arguments.of(10, "INP", 1, 2025, 5678567856781234L, 890),
+//        Arguments.of(10, "USD", 1, 2025, 5678567856781234L, 55778),
+//        Arguments.of(-1, "USD", 1, 2025, 5678567856781234L, 890)
+    );
+  }
+  @ParameterizedTest
+  @MethodSource("badPaymentExamples")
+  void whenPostedBadPaymentThen422IsReturned(
+      int amount, String currency, int expiryMonth, int expiryYear,
+      long cardNumber, int cvv) throws Exception {
+    PostPaymentRequest request = new PostPaymentRequest();
+    request.setAmount(amount);
+    request.setCurrency(currency);
+    request.setExpiryMonth(expiryMonth);
+    request.setExpiryYear(expiryYear);
+    request.setCardNumber(cardNumber);
+    request.setCvv(cvv);
+
+    String requestJson = new ObjectMapper().writeValueAsString(request);
+
+    mvc.perform(MockMvcRequestBuilders.post("/payment/submit")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestJson))
+        .andExpect(status().isUnprocessableEntity());
   }
 }

@@ -2,10 +2,12 @@ package com.checkout.payment.gateway.service;
 
 import com.checkout.payment.gateway.enums.PaymentStatus;
 import com.checkout.payment.gateway.exception.EventProcessingException;
+import com.checkout.payment.gateway.exception.RequestProcessingException;
 import com.checkout.payment.gateway.model.PostPaymentRequest;
 import com.checkout.payment.gateway.model.PostPaymentResponse;
 import com.checkout.payment.gateway.repository.PaymentsRepository;
 import java.util.UUID;
+import com.checkout.payment.gateway.validators.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,12 @@ public class PaymentGatewayService {
   private static final Logger LOG = LoggerFactory.getLogger(PaymentGatewayService.class);
 
   private final PaymentsRepository paymentsRepository;
+  private final Validator validator;
 
-  public PaymentGatewayService(PaymentsRepository paymentsRepository) {
+  public PaymentGatewayService(PaymentsRepository paymentsRepository,
+      Validator validator) {
     this.paymentsRepository = paymentsRepository;
+    this.validator = validator;
   }
 
   public PostPaymentResponse getPaymentById(UUID id) {
@@ -27,6 +32,10 @@ public class PaymentGatewayService {
   }
 
   public UUID processPayment(PostPaymentRequest paymentRequest) {
+    if (!validator.validate(paymentRequest)){
+      throw new RequestProcessingException("Payment request details invalid");
+    }
+
     UUID newPaymentId = UUID.randomUUID();
     PostPaymentResponse response = PostPaymentResponse.fromPaymentRequest(paymentRequest);
     response.setId(newPaymentId);

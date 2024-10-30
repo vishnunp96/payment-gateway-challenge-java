@@ -19,4 +19,11 @@ public class CommonExceptionHandler {
     return new ResponseEntity<>(new ErrorResponse("Page not found"),
         HttpStatus.NOT_FOUND);
   }
+
+  @ExceptionHandler(RequestProcessingException.class)
+  public ResponseEntity<ErrorResponse> handleException(RequestProcessingException ex) {
+    LOG.error("Request processing exception happened", ex);
+    return new ResponseEntity<>(new ErrorResponse("Request could not be processed"),
+        HttpStatus.UNPROCESSABLE_ENTITY);
+  }
 }
