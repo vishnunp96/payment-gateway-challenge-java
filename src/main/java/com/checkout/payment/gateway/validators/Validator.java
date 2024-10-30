@@ -12,6 +12,9 @@ public class Validator {
   /**
    * Any bigger and this can be switched out for a chain of responsibility pattern.
    * Could refactor to inject different YearMonth as current date.
+   * Assumptions:
+   *  - cvv can be '000' so validating for length <= 4
+   *  - credit card numbers cannot start with zero, string length can be used directly
    * */
 
   private final Set<String> isoCurrencyCodes;

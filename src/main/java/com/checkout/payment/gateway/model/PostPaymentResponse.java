@@ -12,11 +12,6 @@ public class PostPaymentResponse {
   private String currency;
   private int amount;
 
-  private static int getCardNumberLastFour(long cardNumber) {
-    String cardNumberString = Long.toString(cardNumber);
-    assert cardNumberString.length() > 4;
-    return Integer.parseInt(cardNumberString.substring(cardNumberString.length() - 4));
-  }
 
   public static PostPaymentResponse fromPaymentRequest(PostPaymentRequest paymentRequest) {
     PostPaymentResponse response = new PostPaymentResponse();
@@ -24,7 +19,7 @@ public class PostPaymentResponse {
     response.setCurrency(paymentRequest.getCurrency());
     response.setExpiryMonth(paymentRequest.getExpiryMonth());
     response.setExpiryYear(paymentRequest.getExpiryYear());
-    response.setCardNumberLastFour(getCardNumberLastFour(paymentRequest.getCardNumber()));
+    response.setCardNumberLastFour(paymentRequest.getCardNumberLastFour());
 
     return response;
   }
