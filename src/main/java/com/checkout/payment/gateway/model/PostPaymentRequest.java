@@ -68,10 +68,16 @@ public class PostPaymentRequest implements Serializable {
     return String.format("%02d/%d", expiryMonth, expiryYear);
   }
 
+  public int cardNumberLastFour() {
+    String cardNumberString = Long.toString(cardNumber);
+    assert cardNumberString.length() >= 4;
+    return Integer.parseInt(cardNumberString.substring(cardNumberString.length() - 4));
+  }
+
   @Override
   public String toString() {
     return "PostPaymentRequest{" +
-        "cardNumberLastFour=" + cardNumber +
+        "cardNumberLastFour=" + cardNumberLastFour() +
         ", expiryMonth=" + expiryMonth +
         ", expiryYear=" + expiryYear +
         ", currency='" + currency + '\'' +

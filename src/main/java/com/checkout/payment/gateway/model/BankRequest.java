@@ -66,10 +66,16 @@ public class BankRequest implements Serializable {
     this.expiryDate = expiryDate;
   }
 
+  public int cardNumberLastFour() {
+    String cardNumberString = Long.toString(cardNumber);
+    assert cardNumberString.length() >= 4;
+    return Integer.parseInt(cardNumberString.substring(cardNumberString.length() - 4));
+  }
+
   @Override
   public String toString() {
     return "BankRequest{" +
-        "cardNumber=" + cardNumber +
+        "cardNumberLastFour=" + cardNumberLastFour() +
         ", expiryDate=" + expiryDate +
         ", currency='" + currency + '\'' +
         ", amount=" + amount +
