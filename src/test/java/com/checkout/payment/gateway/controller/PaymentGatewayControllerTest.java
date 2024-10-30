@@ -127,6 +127,8 @@ class PaymentGatewayControllerTest {
     mvc.perform(MockMvcRequestBuilders.post("/payment/submit")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
-        .andExpect(status().isUnprocessableEntity());
+        .andExpect(status().isUnprocessableEntity())
+        .andExpect(jsonPath("$.id").isEmpty())
+        .andExpect(jsonPath("$.status").value(PaymentStatus.REJECTED.getName()));
   }
 }

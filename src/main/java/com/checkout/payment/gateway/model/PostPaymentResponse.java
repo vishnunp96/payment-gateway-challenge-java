@@ -18,9 +18,14 @@ public class PostPaymentResponse {
     return Integer.parseInt(cardNumberString.substring(cardNumberString.length() - 4));
   }
 
-  public static PostPaymentResponse fromPaymentRequest(PostPaymentRequest paymentRequest) {
+  public static PostPaymentResponse getDefaultResponse() {
     PostPaymentResponse response = new PostPaymentResponse();
     response.setStatus(PaymentStatus.REJECTED);
+    return response;
+  }
+
+  public static PostPaymentResponse fromPaymentRequest(PostPaymentRequest paymentRequest) {
+    PostPaymentResponse response = getDefaultResponse();
     response.setAmount(paymentRequest.getAmount());
     response.setCurrency(paymentRequest.getCurrency());
     response.setExpiryMonth(paymentRequest.getExpiryMonth());

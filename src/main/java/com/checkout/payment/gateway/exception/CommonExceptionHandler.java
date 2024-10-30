@@ -1,6 +1,7 @@
 package com.checkout.payment.gateway.exception;
 
 import com.checkout.payment.gateway.model.ErrorResponse;
+import com.checkout.payment.gateway.model.PostPaymentResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,9 @@ public class CommonExceptionHandler {
   }
 
   @ExceptionHandler(RequestProcessingException.class)
-  public ResponseEntity<ErrorResponse> handleException(RequestProcessingException ex) {
+  public ResponseEntity<PostPaymentResponse> handleException(RequestProcessingException ex) {
     LOG.error("Request processing exception happened", ex);
-    return new ResponseEntity<>(new ErrorResponse("Request could not be processed"),
+    return new ResponseEntity<>(PostPaymentResponse.getDefaultResponse(),
         HttpStatus.UNPROCESSABLE_ENTITY);
   }
 }
