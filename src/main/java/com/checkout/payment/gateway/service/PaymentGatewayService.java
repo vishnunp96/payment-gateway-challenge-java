@@ -19,11 +19,13 @@ public class PaymentGatewayService {
 
   private final PaymentsRepository paymentsRepository;
   private final Validator validator;
+  private final AcquiringBankService bankService;
 
   public PaymentGatewayService(PaymentsRepository paymentsRepository,
-      Validator validator) {
+      Validator validator, AcquiringBankService bankService) {
     this.paymentsRepository = paymentsRepository;
     this.validator = validator;
+    this.bankService = bankService;
   }
 
   public PostPaymentResponse getPaymentById(UUID id) {
@@ -42,6 +44,9 @@ public class PaymentGatewayService {
     response.setId(newPaymentId);
 
     response.setStatus(PaymentStatus.DECLINED);
+    if (bankService.authorizePaymentRequest(paymentRequest)){
+      response.setStatus(PaymentStatus.AUTHORIZED);
+    }
 
     paymentsRepository.add(response);
     return newPaymentId;

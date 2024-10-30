@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class CommonExceptionHandler {
 
+  /**
+   * Another exception handler could be used to signal bad gateway for when bank server is down.
+   * */
+
   private static final Logger LOG = LoggerFactory.getLogger(CommonExceptionHandler.class);
 
   @ExceptionHandler(EventProcessingException.class)
@@ -24,7 +28,7 @@ public class CommonExceptionHandler {
   @ExceptionHandler(RequestProcessingException.class)
   public ResponseEntity<PostPaymentResponse> handleException(RequestProcessingException ex) {
     LOG.error("Request processing exception happened", ex);
-    return new ResponseEntity<>(PostPaymentResponse.getDefaultResponse(),
+    return new ResponseEntity<>(new PostPaymentResponse(),
         HttpStatus.UNPROCESSABLE_ENTITY);
   }
 }
