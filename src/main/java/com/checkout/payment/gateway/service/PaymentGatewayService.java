@@ -28,7 +28,7 @@ public class PaymentGatewayService {
 
   public UUID processPayment(PostPaymentRequest paymentRequest) {
     UUID newPaymentId = UUID.randomUUID();
-    PostPaymentResponse response = new PostPaymentResponse();
+    PostPaymentResponse response = PostPaymentResponse.fromPaymentRequest(paymentRequest);
     response.setId(newPaymentId);
 
     response.setStatus(PaymentStatus.DECLINED);

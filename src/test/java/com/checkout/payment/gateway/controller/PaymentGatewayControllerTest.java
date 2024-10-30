@@ -65,16 +65,16 @@ class PaymentGatewayControllerTest {
   private static Stream<Arguments> goodPaymentExamples() {
     return Stream.of(
 //        Arguments.of(100, "GBP", 4, 2025, 2222405343248877L, 123,
-//            PaymentStatus.AUTHORIZED),
+//            8877, PaymentStatus.AUTHORIZED),
         Arguments.of(60000, "USD", 1, 2026, 2222405343248112L, 456,
-            PaymentStatus.DECLINED)
+            8112, PaymentStatus.DECLINED)
     );
   }
   @ParameterizedTest
   @MethodSource("goodPaymentExamples")
   void whenPostedPaymentThen201IsReturned(int amount, String currency,
       int expiryMonth, int expiryYear, long cardNumber, int cvv,
-      PaymentStatus expectedResponse) throws Exception {
+      int cardNumberLastFour, PaymentStatus expectedResponse) throws Exception {
     PostPaymentRequest request = new PostPaymentRequest();
     request.setAmount(amount);
     request.setCurrency(currency);
@@ -90,7 +90,12 @@ class PaymentGatewayControllerTest {
             .content(requestJson))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").isNotEmpty())
-        .andExpect(jsonPath("$.status").value(expectedResponse.getName()));
+        .andExpect(jsonPath("$.status").value(expectedResponse.getName()))
+        .andExpect(jsonPath("$.amount").value(amount))
+        .andExpect(jsonPath("$.cardNumberLastFour").value(cardNumberLastFour))
+        .andExpect(jsonPath("$.expiryMonth").value(expiryMonth))
+        .andExpect(jsonPath("$.expiryYear").value(expiryYear))
+        .andExpect(jsonPath("$.currency").value(currency));
 
   }
 }
