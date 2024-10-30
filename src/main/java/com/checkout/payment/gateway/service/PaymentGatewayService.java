@@ -1,5 +1,6 @@
 package com.checkout.payment.gateway.service;
 
+import com.checkout.payment.gateway.enums.PaymentStatus;
 import com.checkout.payment.gateway.exception.EventProcessingException;
 import com.checkout.payment.gateway.model.PostPaymentRequest;
 import com.checkout.payment.gateway.model.PostPaymentResponse;
@@ -26,6 +27,13 @@ public class PaymentGatewayService {
   }
 
   public UUID processPayment(PostPaymentRequest paymentRequest) {
-    return UUID.randomUUID();
+    UUID newPaymentId = UUID.randomUUID();
+    PostPaymentResponse response = new PostPaymentResponse();
+    response.setId(newPaymentId);
+
+    response.setStatus(PaymentStatus.DECLINED);
+
+    paymentsRepository.add(response);
+    return newPaymentId;
   }
 }
