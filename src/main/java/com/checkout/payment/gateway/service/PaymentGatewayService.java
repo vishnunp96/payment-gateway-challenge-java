@@ -32,6 +32,7 @@ public class PaymentGatewayService {
   }
 
   public UUID processPayment(PostPaymentRequest paymentRequest) {
+    LOG.debug("Processing new payment request");
     if (!validator.validate(paymentRequest)){
       throw new RequestProcessingException("Payment request details invalid");
     }

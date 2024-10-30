@@ -103,10 +103,10 @@ class PaymentGatewayControllerTest {
   private static Stream<Arguments> badPaymentExamples() {
     return Stream.of(
         Arguments.of(10, "USD", 1, 2025, 123L, 890)
-//        Arguments.of(10, "USD", 1, 2024, 5678567856781234L, 890),
-//        Arguments.of(10, "INP", 1, 2025, 5678567856781234L, 890),
-//        Arguments.of(10, "USD", 1, 2025, 5678567856781234L, 55778),
-//        Arguments.of(-1, "USD", 1, 2025, 5678567856781234L, 890)
+        , Arguments.of(10, "USD", 1, 2024, 5678567856781234L, 890)
+        , Arguments.of(10, "INP", 1, 2025, 5678567856781234L, 890)
+        , Arguments.of(10, "USD", 1, 2025, 5678567856781234L, 55778)
+        , Arguments.of(-1, "USD", 1, 2025, 5678567856781234L, 890)
     );
   }
   @ParameterizedTest
